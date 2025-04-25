@@ -1,5 +1,5 @@
 name: pt1_rodriguez_pau
-description: "A new Flutter project."
+description: Segunda práctica de Flutter
 publish_to: 'none'
 version: 0.1.0
 
@@ -9,11 +9,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_fonts: ^6.2.1
+cupertino_icons: ^1.0.2
+google_fonts: ^5.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true

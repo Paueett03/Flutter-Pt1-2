@@ -1,27 +1,44 @@
-// main.dart
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pt1_rodriguez_pau/home_screen.dart';
+import 'product_detail.dart';
+import 'cart_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key); // Agregar el parámetro key
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pt1_Rodríguez_Pau',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Colors.deepPurple,
-        scaffoldBackgroundColor: Colors.grey[200],
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black),
-          bodyMedium: TextStyle(fontSize: 16.0, color: Colors.black87),
+        primarySwatch: Colors.deepPurple,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.deepPurple,
+        ).copyWith(
+          secondary: Colors.deepOrangeAccent, // Usar colorScheme.secondary en lugar de accentColor
+        ),
+        textTheme: TextTheme(
+          titleLarge: TextStyle(
+            fontFamily: GoogleFonts.montserrat().fontFamily,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          bodyLarge: TextStyle(
+            fontFamily: GoogleFonts.lato().fontFamily,
+            fontSize: 16,
+          ),
         ),
       ),
-      home: const HomeScreen(),
+      home: HomeScreen(),
+      routes: {
+        ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
+        CartScreen.routeName: (ctx) => const CartScreen(),
+      },
     );
   }
 }

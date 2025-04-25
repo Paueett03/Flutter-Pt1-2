@@ -1,37 +1,76 @@
 import 'package:flutter/material.dart';
 import 'product.dart';
+import 'cart.dart';
 
-class ProductDetail extends StatelessWidget {
-  final Product product;
-  const ProductDetail({super.key, required this.product});
-
+class ProductDetailScreen extends StatelessWidget {
+  static const routeName = '/product-detail';
+  
+  const ProductDetailScreen({Key? key}) : super(key: key); // Agregar el parámetro key
+  
   @override
   Widget build(BuildContext context) {
+    final Product product = ModalRoute.of(context)!.settings.arguments as Product;
+    final Cart cart = Cart();
+    
     return Scaffold(
-      appBar: AppBar(title: Text(product.title)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(
+        title: Text(product.title),
+      ),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(product.imageUrl, height: 200, width: double.infinity, fit: BoxFit.cover),
+            SizedBox(
+              height: 300,
+              width: double.infinity,
+              child: Hero(
+                tag: 'product-${product.id}',
+                child: Image.network(
+                  product.image,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             const SizedBox(height: 10),
-            Text(product.title, style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              '\$${product.price}',
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 20,
+              ),
+            ),
             const SizedBox(height: 10),
-            Text(product.description),
-            const SizedBox(height: 10),
-            Text('€${product.price.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              width: double.infinity,
+              child: Text(
+                product.description,
+                textAlign: TextAlign.center,
+                softWrap: true,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                cart.addItem(product);
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Producte afegit correctament al carretó'),
+                    duration: const Duration(seconds: 2),
+                    action: SnackBarAction(
+                      label: 'DESHACER',
+                      onPressed: () {
+                        cart.removeSingleItem(product.id);
+                      },
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.shopping_cart),
+              label: const Text('Afegir al carretó'),
+            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Afegit correctament al carretó')),
-          );
-        },
-        child: const Icon(Icons.add_shopping_cart),
       ),
     );
   }
